@@ -1,27 +1,11 @@
 version: '3'
 
 services:
-  web:
-    command: npm start
-    ports:
-      - 3000:3000
-    volumes:
-      - .:/app
+
+  sample-prod:
+    container_name: sample-prod
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=test
-
-# services:
-#   web:
-#     build:
-#       context: .
-#       dockerfile: Dockerfile
-#     ports: 
-#       - "3000:3000"
-#     volumes:
-#       - /app/node_modules
-#       - .:/app
-#     environment:
-#       - NODE_ENV=development
+    ports:
+      - '8000:8000'

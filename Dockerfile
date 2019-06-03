@@ -1,29 +1,18 @@
-# base image
-FROM node:10.16 as react-build
+# # base image
+FROM node:10.16 as build
 
-# ADD yarn.lock /yarn.lock
-# ADD package.json /package.json
-
-# ENV NODE_PATH=/node_modules
-# ENV PATH=$PATH:/node_modules/.bin
-# RUN yarn
-
-# # set working directory
-# WORKDIR /app
-# ADD . /app
-
-# RUN yarn
-# RUN yarn build
-
-# Create a work directory and copy over our dependency manifest files.
-RUN mkdir /app
 WORKDIR /app
-COPY /src /app/src
-COPY ["package.json", "package-lock.json*", "./"]
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json /app/package.json
+RUN npm install --silent
+RUN npm install react-scripts@3.0.1 -g --silent
+COPY . /app
+RUN npm run build
 
-# If you're using yarn:
-#  yarn build
-RUN npm install --silent && mv node_modules ../
-
-# Expose PORT 3000 on our virtual machine so we can run our server
-EXPOSE 3000
+# production environment
+FROM nginx:1.15.9
+COPY --from=build /app/build /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
+EXPOSE 8000
+CMD ["nginx", "-g", "daemon off;"]
