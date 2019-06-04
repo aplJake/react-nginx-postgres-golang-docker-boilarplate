@@ -1,6 +1,7 @@
+#!/usr/bin/env bash
 cd frontend
 
-npm run build
+yarn build
 
 cd ..
 

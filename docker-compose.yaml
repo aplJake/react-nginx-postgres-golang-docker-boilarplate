@@ -1,7 +1,14 @@
 version: '3'
 
 services:
-  
+  server:
+    container_name: golang-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+
   nginx:
     container_name: nginx
     build:
