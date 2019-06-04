@@ -1,9 +1,11 @@
 FROM golang:latest AS builder
 RUN go version
 
-
-COPY main.go /go/src/github.com/aplJake/react-nginx-docker-test-1/
 WORKDIR /go/src/github.com/aplJake/react-nginx-docker-test-1/
+
+COPY main.go .
+COPY db db
+
 #RUN set -x && \
 #    go get github.com/golang/dep/cmd/dep && \
 #    dep ensure -v
